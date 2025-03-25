@@ -27,11 +27,11 @@
         <li class="side-nav-title">Main</li>
 
         <li class="side-nav-item">
-          <a href="/" class="side-nav-link">
+          <RouterLink to="/" class="side-nav-link">
             <i class="ri-dashboard-3-line"></i>
             <span class="badge bg-success float-end">9+</span>
             <span> Dashboard </span>
-          </a>
+          </RouterLink>
         </li>
 
         <li class="side-nav-item">
@@ -43,13 +43,13 @@
             class="side-nav-link"
           >
             <i class="ri-pages-line"></i>
-            <span> Pages </span>
+            <span> Customer </span>
             <span class="menu-arrow"></span>
           </a>
           <div class="collapse" id="sidebarPages">
             <ul class="side-nav-second-level">
               <li>
-                <a href="pages-starter.html">Starter Page</a>
+                <RouterLink to="customers">View Customer List</RouterLink>
               </li>
              
             </ul>
@@ -64,13 +64,13 @@
             class="side-nav-link"
           >
             <i class="ri-pages-line"></i>
-            <span> User </span>
+            <span> Customers </span>
             <span class="menu-arrow"></span>
           </a>
           <div class="collapse" id="sidebaruser">
             <ul class="side-nav-second-level">
               <li>
-                <a href="pages-starter.html">Starter Page</a>
+                <a href="pages-starter.html">View Customers List</a>
               </li>
              
             </ul>

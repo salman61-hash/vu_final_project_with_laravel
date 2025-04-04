@@ -3,7 +3,7 @@
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Add Customer</h4>
-            <RouterLink to="/" class="btn btn-light">
+            <RouterLink to="customers" class="btn btn-light">
                 <i class="fas fa-arrow-left"></i> Back
             </RouterLink>
         </div>
@@ -43,7 +43,32 @@
 </template>
 
 <script lang="ts" setup>
+import { reactive, ref } from "vue";
 
+import { useRouter } from "vue-router";
+import api from "@/Api";
+
+const router = useRouter();
+
+
+const customer = reactive({
+  name: "",
+  phone: "",
+  email: "",
+  address: "",
+});
+
+const createCustomer=()=>{
+    api.post(`/customers`,customer)
+  .then(res=>{
+    console.log(res);
+
+    router.push({ path: '/customers' })
+  })
+  .catch(err =>{
+     console.log(err);
+  })
+};
 </script>
 
 <style>

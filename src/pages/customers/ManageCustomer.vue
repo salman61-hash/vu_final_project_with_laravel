@@ -4,7 +4,7 @@
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Customer List</h4>
-            <RouterLink to="/create_customer" class="btn btn-light">
+            <RouterLink to="/create_customers" class="btn btn-light">
                 <i class="fas fa-plus-circle"></i> Add Customer
             </RouterLink>
         </div>
@@ -13,7 +13,8 @@
             <!-- Search form centered -->
             <form @submit.prevent="searchCustomer" class="d-flex justify-content-center">
                 <div class="input-group" style="max-width: 400px;">
-                    <input type="text" v-model="searchQuery" class="form-control rounded" placeholder="Search customers..." required>
+                    <input type="text" v-model="searchQuery" @input="searchCustomer" class="form-control rounded" placeholder="Search customers...">
+
                     <button type="submit" class="btn btn-warning d-flex align-items-center rounded">
                         <i class="fas fa-search me-2"></i> Search
                     </button>
@@ -42,10 +43,10 @@
                             <td>{{ customer.email }}</td>
                             <td>{{ customer.address }}</td>
                             <td>
-                                <RouterLink class="btn btn-sm btn-info me-2" :to="'/show/' + customer.id">
+                                <RouterLink class="btn btn-sm btn-info me-2" :to="`/customers/${customer.id}`">
                                     Show <i class="fas fa-eye"></i>
                                 </RouterLink>
-                                <RouterLink class="btn btn-sm btn-warning me-2" :to="'/edit/' + customer.id">
+                                <RouterLink class="btn btn-sm btn-warning me-2" :to="`/customers/edit/${customer.id}`">
                                     Update <i class="fas fa-edit"></i>
                                 </RouterLink>
                                 <button class="btn btn-danger btn-sm" @click="deletecustomer(customer.id)">
@@ -71,6 +72,7 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
 const customers = ref([]);
+const searchQuery = ref("");
 
 
 onMounted(() => {
@@ -89,21 +91,20 @@ const fetchCustomers= ()=>{
         })
 }
 
+const searchCustomer = () => {
+    api.get("/customers", { params: { search: searchQuery.value } })
+        .then(res => {
+            customers.value = res.data.customers || [];
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
 
-// const deletecustomer= (id)=>{
-//   api.delete(baseurl+"api/customers")
-//   .then(res=>{
-//     console.log(res);
-//     if (res.data.customer) {
-//         fetchCustomers()
-//     }
-//   })
-//   .catch(err =>{
-//      console.log(err);
-     
-//   })
-   
-// }
+
+
+
+
 
 const deletecustomer = (id) => {
   api.delete(`/customers/${id}`)

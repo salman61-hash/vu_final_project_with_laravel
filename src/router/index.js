@@ -8,6 +8,7 @@ import UpdateCustomer from '@/pages/customers/UpdateCustomer.vue';
 import NotFound from '@/pages/NotFound.vue';
 import CreateSuppliers from '@/pages/suppliers/CreateSuppliers.vue';
 import ManageSuppliers from '@/pages/suppliers/ManageSuppliers.vue';
+import ShowSuppliers from '@/pages/suppliers/ShowSuppliers.vue';
 import UpdateSuppliers from '@/pages/suppliers/UpdateSuppliers.vue';
 import ManageUsers from '@/pages/users/ManageUsers.vue';
 import { createRouter, createWebHistory } from 'vue-router'
@@ -28,6 +29,7 @@ const routes = [
   { path: '/suppliers', component: ManageSuppliers },
   { path: '/create_suppliers', component: CreateSuppliers },
   { path:'/suppliers/edit/:id', component: UpdateSuppliers},
+  { path:'/suppliers/:id', component: ShowSuppliers},
 
   { path: '/:pathMatch(.*)*', component: NotFound },
 ]

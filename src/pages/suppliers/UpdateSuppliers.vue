@@ -3,7 +3,7 @@
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Update Suppliers</h4>
-            <RouterLink to="suppliers" class="btn btn-light">
+            <RouterLink to="/suppliers" class="btn btn-light">
                 <i class="fas fa-arrow-left"></i> Back
             </RouterLink>
         </div>
@@ -49,11 +49,12 @@
 import api from '@/Api';
 import router from '@/router';
 import { onMounted, reactive } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 
 
 const { id } = useRoute().params
+
 
 onMounted(()=>{
     fetchsuppliers();

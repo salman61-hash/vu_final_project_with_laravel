@@ -3,7 +3,7 @@
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Update Customer</h4>
-            <RouterLink to="customers" class="btn btn-light">
+            <RouterLink to="/customers" class="btn btn-light">
                 <i class="fas fa-arrow-left"></i> Back
             </RouterLink>
         </div>

@@ -28,7 +28,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                           
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -39,7 +38,7 @@
                            
                             
                             <td>
-                                <RouterLink class="btn btn-sm btn-info me-2" :to="`/customers/${self.id}`">
+                                <RouterLink class="btn btn-sm btn-info me-2" :to="`/customer/${self.id}`">
                                     Show <i class="fas fa-eye"></i>
                                 </RouterLink>
                                 <RouterLink class="btn btn-sm btn-warning me-2" :to="`/customers/edit/${self.id}`">

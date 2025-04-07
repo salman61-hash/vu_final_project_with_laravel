@@ -32,7 +32,7 @@
           <!-- start page title -->
          
           <!-- end row -->
-        </div>
+        </div>    
         <!-- container -->
       </div>
       <!-- content -->

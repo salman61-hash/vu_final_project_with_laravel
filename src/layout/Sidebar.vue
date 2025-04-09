@@ -130,7 +130,7 @@
           <div class="collapse" id="sidebarPaymentStatus">
             <ul class="side-nav-second-level">
               <li>
-                <RouterLink to="payment-status">View Payment Status List</RouterLink>
+                <RouterLink to="status">View Payment Status List</RouterLink>
               </li>
             </ul>
           </div>
@@ -247,6 +247,23 @@
             </ul>
           </div>
         </li>
+      
+        <!-- Total Profit -->
+        <li class="side-nav-item">
+  <a data-bs-toggle="collapse" href="#sidebarprofit" aria-expanded="false" aria-controls="sidebarWithdraw" class="side-nav-link">
+    <i class="ri-bar-chart-line"></i> <!-- Changed icon here -->
+    <span> Total Profit </span>
+    <span class="menu-arrow"></span>
+  </a>
+  <div class="collapse" id="sidebarprofit">
+    <ul class="side-nav-second-level">
+      <li>
+        <RouterLink to="withdraw">View Withdraw List</RouterLink>
+      </li>
+    </ul>
+  </div>
+</li>
+
       </ul>
       <!--- End Sidemenu -->
 

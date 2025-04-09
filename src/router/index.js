@@ -9,6 +9,9 @@ import ManageCustomer from '@/pages/customers/ManageCustomer.vue';
 import ShowCustomer from '@/pages/customers/ShowCustomer.vue';
 import UpdateCustomer from '@/pages/customers/UpdateCustomer.vue';
 import NotFound from '@/pages/NotFound.vue';
+import CreateStatus from '@/pages/payment_status/CreateStatus.vue';
+import ManageStatus from '@/pages/payment_status/ManageStatus.vue';
+import UpdateStatus from '@/pages/payment_status/UpdateStatus.vue';
 import CreateSelf from '@/pages/self/CreateSelf.vue';
 import ManageSelf from '@/pages/self/ManageSelf.vue';
 import UpdateSelf from '@/pages/self/UpdateSelf.vue';
@@ -50,6 +53,12 @@ const routes = [
   { path: '/coupons', component: ManageCoupons },
   {path:'/create_coupons', component: CreateCoupuns},
   { path:'/coupons/edit/:id', component: UpdateCoupons},
+
+  // payment_status
+  { path: '/status', component: ManageStatus },
+  { path:'/create_status', component: CreateStatus},
+  { path:'/status/edit/:id', component: UpdateStatus},
+
 
 
   { path: '/:pathMatch(.*)*', component: NotFound },

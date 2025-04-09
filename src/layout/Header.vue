@@ -495,7 +495,7 @@
             >
               <span class="account-user-avatar">
                 <img
-                  src="/assets/images/users/avatar-1.jpg"
+                  src="/assets/images/users/salman2.jpg"
                   alt="user-image"
                   width="32"
                   class="rounded-circle"
@@ -503,7 +503,7 @@
               </span>
               <span class="d-lg-block d-none">
                 <h5 class="my-0 fw-normal">
-                  Thomson
+                  SALMAN
                   <i
                     class="ri-arrow-down-s-line d-none d-sm-inline-block align-middle"
                   ></i>

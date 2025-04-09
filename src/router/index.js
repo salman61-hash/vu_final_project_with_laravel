@@ -1,6 +1,9 @@
 
 
 import Dashboard from '@/components/Dashboard.vue';
+import CreateCoupuns from '@/pages/coupons/CreateCoupuns.vue';
+import ManageCoupons from '@/pages/coupons/ManageCoupons.vue';
+import UpdateCoupons from '@/pages/coupons/UpdateCoupons.vue';
 import CreateCustomer from '@/pages/customers/CreateCustomer.vue';
 import ManageCustomer from '@/pages/customers/ManageCustomer.vue';
 import ShowCustomer from '@/pages/customers/ShowCustomer.vue';
@@ -41,6 +44,12 @@ const routes = [
   { path: '/self', component: ManageSelf },
   {path:'/create_self', component: CreateSelf},
   { path:'/self/edit/:id', component: UpdateSelf},
+
+  // Coupons
+
+  { path: '/coupons', component: ManageCoupons },
+  {path:'/create_coupons', component: CreateCoupuns},
+  { path:'/coupons/edit/:id', component: UpdateCoupons},
 
 
   { path: '/:pathMatch(.*)*', component: NotFound },

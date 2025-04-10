@@ -12,6 +12,10 @@ import NotFound from '@/pages/NotFound.vue';
 import CreateStatus from '@/pages/payment_status/CreateStatus.vue';
 import ManageStatus from '@/pages/payment_status/ManageStatus.vue';
 import UpdateStatus from '@/pages/payment_status/UpdateStatus.vue';
+import CreateProduct from '@/pages/products/CreateProduct.vue';
+import ManageProduct from '@/pages/products/ManageProduct.vue';
+import ShowProduct from '@/pages/products/ShowProduct.vue';
+import UpdateProduct from '@/pages/products/UpdateProduct.vue';
 import CreateSelf from '@/pages/self/CreateSelf.vue';
 import ManageSelf from '@/pages/self/ManageSelf.vue';
 import UpdateSelf from '@/pages/self/UpdateSelf.vue';
@@ -58,6 +62,13 @@ const routes = [
   { path: '/status', component: ManageStatus },
   { path:'/create_status', component: CreateStatus},
   { path:'/status/edit/:id', component: UpdateStatus},
+
+  // products
+  { path: '/products', component: ManageProduct },
+  { path:'/create_products', component: CreateProduct},
+  { path: '/products/edir/:id', component: UpdateProduct},
+  { path: '/products/:id', component: ShowProduct},
+
 
 
 

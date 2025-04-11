@@ -167,7 +167,7 @@
                 <RouterLink to="purchase">View Purchase List</RouterLink>
               </li>
               <li>
-                <RouterLink to="purchase-details">View Purchase Details</RouterLink>
+                <RouterLink to="purchase_details">View Purchase Details</RouterLink>
               </li>
               <li>
                 <RouterLink to="purchase-return">View Purchase Return List</RouterLink>
@@ -191,7 +191,7 @@
                 <RouterLink to="sales">View Sales List</RouterLink>
               </li>
               <li>
-                <RouterLink to="sales-details">View Sales Details</RouterLink>
+                <RouterLink to="sales_details">View Sales Details</RouterLink>
               </li>
             </ul>
           </div>

@@ -16,6 +16,12 @@ import CreateProduct from '@/pages/products/CreateProduct.vue';
 import ManageProduct from '@/pages/products/ManageProduct.vue';
 import ShowProduct from '@/pages/products/ShowProduct.vue';
 import UpdateProduct from '@/pages/products/UpdateProduct.vue';
+import ManagePdetails from '@/pages/purchase_details/ManagePdetails.vue';
+import CreatePurchase from '@/pages/purchases/CreatePurchase.vue';
+import ManagePurchase from '@/pages/purchases/ManagePurchase.vue';
+import UpdatePurchase from '@/pages/purchases/UpdatePurchase.vue';
+import CreateSales from '@/pages/sales/CreateSales.vue';
+import ManageSales from '@/pages/sales/ManageSales.vue';
 import CreateSelf from '@/pages/self/CreateSelf.vue';
 import ManageSelf from '@/pages/self/ManageSelf.vue';
 import UpdateSelf from '@/pages/self/UpdateSelf.vue';
@@ -66,8 +72,26 @@ const routes = [
   // products
   { path: '/products', component: ManageProduct },
   { path:'/create_products', component: CreateProduct},
-  { path: '/products/edir/:id', component: UpdateProduct},
+  { path: '/products/edit/:id', component: UpdateProduct},
   { path: '/products/:id', component: ShowProduct},
+
+// purchase
+{ path: '/purchase', component: ManagePurchase },
+{ path:'/create_purchase', component: CreatePurchase},
+{ path: '/purchase/edit/:id', component: UpdatePurchase},
+
+
+// sales
+{ path: '/sales', component: ManageSales },
+{ path:'/create_sales', component: CreateSales},
+
+// Purchase_details
+
+{ path: '/purchase_details', component: ManagePdetails },
+// sales_details
+
+// { path: '/sales_details', component: ManageSales },
+
 
 
 

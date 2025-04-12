@@ -29,6 +29,12 @@
             <label class="form-label">Photo:</label>
             <input @change="onFileChange" class="form-control" type="file" />
           </div>
+            <!-- photo preview -->
+          <div class="mb-3" v-if="previewUrl">
+            <label class="form-label">Preview:</label><br />
+            <img :src="previewUrl" alt="Photo Preview" style="max-width: 150px; max-height: 150px; border: 1px solid #ddd; padding: 5px;" />
+          </div>
+
 
           <div class="mb-3">
             <label class="form-label">Purchase Price</label>
@@ -68,6 +74,8 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const categories = ref([]);
+const previewUrl = ref(null); // Add this line
+
 
 const product = reactive({
   name: '',
@@ -108,6 +116,7 @@ const onFileChange = (event) => {
   const file = event.target.files[0];
   if (file) {
     product.photo = file;
+    previewUrl.value = URL.createObjectURL(file); // Show preview
   }
 };
 

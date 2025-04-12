@@ -19,19 +19,17 @@
             <input type="text" v-model="product.category_id" class="form-control" required />
           </div>
 
-          <!-- <div class="mb-3">
-            <label class="form-label">Self no</label>
-            <select v-model="product.category_id" class="form-select" name="category" required>
-              <option value="">Select Category</option>
-              <option v-for="category in categories" :key="category.id" :value="category.id">
-                {{ category.name }}
-              </option>
-            </select>
-          </div> -->
+         
 
           <div v-if="product.photo && !(product.photo instanceof File)" class="mb-3">
             <label class="form-label">Existing Photo:</label>
             <img :src="`/uploads/products/${product.photo}`" alt="Product Image" width="100" />
+          </div>
+
+           <!-- photo preview -->
+           <div class="mb-3" v-if="previewUrl">
+            <label class="form-label">Preview:</label><br />
+            <img :src="previewUrl" alt="Photo Preview" style="max-width: 150px; max-height: 150px; border: 1px solid #ddd; padding: 5px;" />
           </div>
 
           <div class="mb-3">
@@ -74,10 +72,11 @@
 <script setup>
 import api from '@/Api';
 import router from '@/router';
-import { onMounted, reactive} from 'vue';
+import { onMounted, reactive, ref} from 'vue';
 import { useRoute } from 'vue-router';
 
 const { id } = useRoute().params
+const previewUrl = ref(null); // Add this line
 
 
 
@@ -124,6 +123,14 @@ const fetchProduct =()=>{
             console.log(err);
         });
 }
+
+const onFileChange = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    product.photo = file;
+    previewUrl.value = URL.createObjectURL(file); // Show preview
+  }
+};
 
 
 

@@ -6,7 +6,7 @@
               <!-- <script>
                 document.write(new Date().getFullYear());
               </script> -->
-              © MS Store - Theme by <b>SALMAN</b>
+              © MS Maruf Telecom - Theme by <b>SALMAN</b>
             </div>
           </div>
         </div>

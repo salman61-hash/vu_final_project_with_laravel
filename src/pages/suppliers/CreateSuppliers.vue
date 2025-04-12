@@ -67,6 +67,7 @@ const createSuppliers =()=>{
     api.post(`/suppliers`,supplier)
     .then(res=>{
         console.log(res);
+        
         router.push({ path: '/suppliers' })
         
     }) .catch(err =>{

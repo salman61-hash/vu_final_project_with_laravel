@@ -1,6 +1,22 @@
 
 
-<script lang="ts" setup>
+<script setup>
+import router from '@/router';
+import { useAuthStore } from '@/store/AuthStore';
+
+  
+const auth = useAuthStore();
+  const Logout=()=>{
+  try {
+    auth.logout()
+    router.push("/login");
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
+
 
 </script>
 
@@ -545,10 +561,10 @@
               </a>
 
               <!-- item-->
-              <a href="auth-logout-2.html" class="dropdown-item">
+              <button @click="Logout" class="btn btn-primary dropdown-item">
                 <i class="ri-logout-box-line fs-18 align-middle me-1"></i>
                 <span>Logout</span>
-              </a>
+              </button>
             </div>
           </li>
         </ul>

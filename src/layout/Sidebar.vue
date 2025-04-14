@@ -27,7 +27,7 @@
         <li class="side-nav-title">Main</li>
 
         <li class="side-nav-item">
-          <RouterLink to="/" class="side-nav-link">
+          <RouterLink to="/dashboard" class="side-nav-link">
             <i class="ri-dashboard-line"></i>
             <span> Dashboard </span>
           </RouterLink>
@@ -170,7 +170,10 @@
                 <RouterLink to="purchase_details">View Purchase Details</RouterLink>
               </li>
               <li>
-                <RouterLink to="purchase-return">View Purchase Return List</RouterLink>
+                <RouterLink to="purchase_return">View Purchase Return List</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="purchaseDetails_return">View Purchase Return Details List</RouterLink>
               </li>
             </ul>
           </div>

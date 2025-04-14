@@ -20,11 +20,15 @@ import ManageProduct from '@/pages/products/ManageProduct.vue';
 import ShowProduct from '@/pages/products/ShowProduct.vue';
 import UpdateProduct from '@/pages/products/UpdateProduct.vue';
 import ManagePdetails from '@/pages/purchase_details/ManagePdetails.vue';
+import CreatePreturn from '@/pages/purchase_return/CreatePreturn.vue';
+import ManagePreturn from '@/pages/purchase_return/ManagePreturn.vue';
+import ManageReturnDet from '@/pages/purchaseReturnDetails/ManageReturnDet.vue';
 import CreatePurchase from '@/pages/purchases/CreatePurchase.vue';
 import ManagePurchase from '@/pages/purchases/ManagePurchase.vue';
 import UpdatePurchase from '@/pages/purchases/UpdatePurchase.vue';
 import CreateSales from '@/pages/sales/CreateSales.vue';
 import ManageSales from '@/pages/sales/ManageSales.vue';
+import ManageSales_details from '@/pages/sales_details/ManageSales_details.vue';
 import CreateSelf from '@/pages/self/CreateSelf.vue';
 import ManageSelf from '@/pages/self/ManageSelf.vue';
 import UpdateSelf from '@/pages/self/UpdateSelf.vue';
@@ -101,8 +105,19 @@ const routes = [
     // Purchase_details
     
     { path: 'purchase_details', component: ManagePdetails },
-    // sales_details
+
+
+    // purchase return
+    { path: 'purchase_return', component: ManagePreturn },
+    { path: 'create_purchase_return', component: CreatePreturn },
     
+
+    // Purchase return details
+    { path: 'purchaseDetails_return', component: ManageReturnDet },
+
+    
+    // sales_details
+    { path: 'sales_details', component: ManageSales_details },
     // { path: 'sales_details', component: ManageSales },
     
 

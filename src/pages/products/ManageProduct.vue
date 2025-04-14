@@ -26,7 +26,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
-                        <thead class="table-info">
+                        <thead class="table-success">
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>

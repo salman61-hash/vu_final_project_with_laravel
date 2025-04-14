@@ -104,22 +104,20 @@ const loginObj= reactive({
    password: ""
 })
 
-const handleLogin=()=>{
-      try {
-        auth.login(loginObj)
+const handleLogin = async () => {
+  try {
+    await auth.login(loginObj);
 
-        setTimeout(()=>{
-            if(auth.token){
-           router.push("/dashboard");
-       }
-        } , 100)
+    if (auth.token) {
+      router.push("/dashboard");
+    } else {
+      console.log("Login failed: Invalid credentials.");
+    }
 
-     
-       router.push("/login");
-      } catch (error) {
-        console.log(error);
-      }
+  } catch (error) {
+    console.log("Error during login:", error.response?.data?.message || error.message);
   }
+}
 
 
 </script>

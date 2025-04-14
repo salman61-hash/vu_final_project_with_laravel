@@ -31,7 +31,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
-                        <thead class="table-dark">
+                        <thead class="table-success">
                             <tr>
                                 <th>ID</th>
                                 <th>Supplier</th>
@@ -94,7 +94,7 @@ import { onMounted, ref } from 'vue';
 
 
 const purchase = ref({data:[]});
-const search = ref();
+const search = ref("");
 const pagination =ref({});
 
 onMounted(()=>{

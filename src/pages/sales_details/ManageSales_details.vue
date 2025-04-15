@@ -107,7 +107,7 @@ onMounted(() => {
   fetchSalesDetails();
 });
 
-const fetchSalesDetails = (url = "/sales_details") => {
+const fetchSalesDetails = (url = "/sale_details") => {
   api.get(url, { params: { search: search.value } })
     .then((res) => {
       console.log(res.data);

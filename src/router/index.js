@@ -26,6 +26,7 @@ import ManageReturnDet from '@/pages/purchaseReturnDetails/ManageReturnDet.vue';
 import CreatePurchase from '@/pages/purchases/CreatePurchase.vue';
 import ManagePurchase from '@/pages/purchases/ManagePurchase.vue';
 import UpdatePurchase from '@/pages/purchases/UpdatePurchase.vue';
+import PurchaseReport from '@/pages/report/PurchaseReport.vue';
 import CreateSales from '@/pages/sales/CreateSales.vue';
 import ManageSales from '@/pages/sales/ManageSales.vue';
 import ManageSales_details from '@/pages/sales_details/ManageSales_details.vue';
@@ -120,7 +121,9 @@ const routes = [
     { path: 'sales_details', component: ManageSales_details },
     // { path: 'sales_details', component: ManageSales },
     
+    //  purchase report
 
+    { path: 'purchase/report', component: PurchaseReport },
 
     ],
   },

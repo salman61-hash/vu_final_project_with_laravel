@@ -175,6 +175,9 @@
               <li>
                 <RouterLink to="purchaseDetails_return">View Purchase Return Details List</RouterLink>
               </li>
+              <li>
+                <RouterLink to="purchase/report">View Purchase Report List</RouterLink>
+              </li>
             </ul>
           </div>
         </li>
@@ -191,10 +194,16 @@
           <div class="collapse" id="sidebarSales">
             <ul class="side-nav-second-level">
               <li>
-                <RouterLink to="sales">View Sales List</RouterLink>
+                <RouterLink to="/sales">View Sales List</RouterLink>
               </li>
               <li>
-                <RouterLink to="sales_details">View Sales Details</RouterLink>
+                <RouterLink to="/sales_details">View Sales Details</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/sales_return">View Sales Return</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/sales_report">View Sales Report</RouterLink>
               </li>
             </ul>
           </div>

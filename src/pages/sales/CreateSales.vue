@@ -1,241 +1,340 @@
 <template>
-<body>
+  <div class="card">
+    <h2>🧾 Sales Invoice</h2>
 
-<div class="card">
-  <h2>🧾 Sales Invoice</h2>
+    <div class="d-flex mb-4 customer-details">
+      <div class="col-sm-6 text-sm-start">
+        <h5 class="pb-2">Customer</h5>
+        <select v-model="dataObj.selectedCustomer" class="form-control wide-select">
+          <option disabled :value="null">Select Customer</option>
+          <option v-for="c in customers" :key="c.id" :value="c">{{ c.name }}</option>
+        </select>
+        <p>Phone : {{ dataObj.selectedCustomer?.phone || '-' }}</p>
+        <p>Email : {{ dataObj.selectedCustomer?.email || '-' }}</p>
+        <p>Address : {{ dataObj.selectedCustomer?.address || '-' }}</p>
+      </div>
 
-  <div class="d-flex mb-4">
-    <div>
-      <strong>Customer Information:</strong><br>
-      Name:
-      <select class="form-control">
-        <option>Select Customer</option>
-        <option>Customer A</option>
-        <option>Customer B</option>
-      </select>
-      Contact: <span class="phone">017xxxxxxxx</span><br>
-      Email: <span class="email">demo@mail.com</span>
+      <div class="col-sm-6 text-end invoice-details">
+        <strong>Invoice Details:</strong><br>
+        Invoice #: SAL-{{ invoiceNumber }}<br>
+        Date: {{ todayDate }}
+      </div>
     </div>
 
-    <div class="text-end">
-      <strong>Invoice Details:</strong><br>
-      Invoice #: SAL-1001<br>
-      Date: 11 Apr 2025
+    <div class="text-end mt-3 clear_all">
+      <button type="button" class="btn btn-danger" @click="clearAll">Clear All</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table wide-table">
+        <thead>
+          <tr class="first_row">
+            <th style="width: 3%">Sl</th>
+            <th style="width: 15%">Product</th>
+            <th style="width: 10%">Cupon</th>
+            <th style="width: 5%">Qty</th>
+            <th style="width: 8%">Purchase Price</th>
+            <th style="width: 8%">Selling Price</th>
+            <th style="width: 8%">Total</th>
+            <th style="width: 8%">Discount</th>
+            <th style="width: 8%">Sub-total</th>
+            <th style="width: 8%">Profit</th>
+            <th style="width: 5%">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>
+              <select v-model="dataObj.selectedProduct" class="form-control wide-select" @change="updateSellingPrice">
+                <option disabled :value="null">Select Product</option>
+                <option v-for="p in products" :key="p.id" :value="p">{{ p.name }}</option>
+              </select>
+            </td>
+            <td>
+              <select v-model="dataObj.selectedcupon" class="form-control wide-select">
+                <option disabled :value="null">Select Cupon</option>
+                <option v-for="cupon in cupons" :key="cupon.id" :value="cupon">{{ cupon.name }}</option>
+              </select>
+            </td>
+            <td><input v-model.number="dataObj.qty" type="number" class="form-control" min="1"></td>
+            <td><input :value="dataObj.selectedProduct?.purchase_price || 0" type="text" class="form-control" disabled></td>
+            <td><input v-model.number="dataObj.sellingPrice" type="number" class="form-control"></td>
+            <td><input :value="calculateTotal" type="text" class="form-control" disabled></td>
+            <td><input :value="dataObj.selectedcupon?.discount || 0" type="text" class="form-control" disabled></td>
+            <td><input :value="calculateSubTotal" type="text" class="form-control" disabled></td>
+            <td><input :value="calculateProfit" type="text" class="form-control" disabled></td>
+            <td>
+              <button type="button" class="btn btn-success" @click="addToCart">Add</button>
+            </td>
+          </tr>
+
+          <tr v-for="(item, index) in cartItems" :key="index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.cupon ? item.cupon.name : '-' }}</td>
+            <td>{{ item.qty }}</td>
+            <td>{{ item.product.purchase_price }}</td>
+            <td>{{ item.sellingPrice }}</td>
+            <td>{{ item.total }}</td>
+            <td>{{ item.discount }}</td>
+            <td>{{ item.subTotal }}</td>
+            <td>{{ item.profit }}</td>
+            <td>
+              <button type="button" class="btn btn-danger" @click="itemRemove(index)">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-end total-section">
+      <p class="total-summary">Subtotal: <span>{{ cart.subTotal }}</span></p>
+      <p class="total-summary">Vat (10%): <span>{{ cart.vat }}</span></p>
+      <p class="total-summary">Grand Total: <span>{{ cart.grandTotal }}</span></p>
+    </div>
+
+    <div class="container payment-section">
+      <p class="total-summary text-start">Total-Discount: <span>{{ cart.totalDiscount }}</span></p>
+      <div class="mb-3">
+        <label for="payment_status_id" class="form-label">Payment Status</label>
+        <select v-model="dataObj.paymentStatus" class="form-control wide-select">
+          <option value="Paid">Paid</option>
+          <option value="Unpaid">Unpaid</option>
+          <option value="Partial">Partial</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="text-center mt-5">
+      <button type="button" class="btn btn-primary btn-lg px-4 py-2 shadow process-btn" @click="processInvoice">🧾 Process Invoice</button>
     </div>
   </div>
-
-  <div class="text-end mt-3 clear_all">
-    <button class="btn btn-danger">Clear All</button>
-  </div>
-
-  <table class="table">
-    <thead>
-      <tr class="first_row">
-        <th>Sl</th>
-        <th>Item</th>
-        <th>Coupon</th>
-        <th>Qty</th>
-        <th>Purchase Price</th>
-        <th>Selling Price</th>
-        <th>Total</th>
-        <th>Discount</th>
-        <th>Sub-total</th>
-        <th>Profit</th>
-        <th>Action</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>
-          <select class="form-control">
-            <option>Select Product</option>
-            <option>Product A</option>
-            <option>Product B</option>
-          </select>
-        </td>
-        <td>
-          <select class="form-control">
-            <option>Select Coupon</option>
-            <option>Coupon A</option>
-            <option>Coupon B</option>
-          </select>
-        </td>
-        <td><input type="number" class="form-control qty"></td>
-        <td><input type="text" class="form-control p_price" disabled></td>
-        <td><input type="text" class="form-control s_price" ></td>
-        <td><input type="text" class="form-control total" disabled></td>
-        <td><input type="number" class="form-control discount" disabled></td>
-        <td><input type="text" class="form-control subtotal" disabled></td>
-        <td><input type="text" class="form-control profit" disabled></td>
-        <td><button class="btn btn-success">Add</button></td>
-      </tr>
-    </thead>
-    <tbody class="dataAppend">
-      <!-- Dynamic rows here -->
-    </tbody>
-  </table>
-
-  <div class="text-end">
-    <p class="total-summary">Subtotal: <span class="subtotal">0.00</span></p>
-    <p class="total-summary">Vat (10%): <span class="vat">0.00</span></p>
-    <p class="total-summary">Grand Total: <span class="grand_total">0.00</span></p>
-  </div>
-
-  <div class="container">
-    <p class="total-summary text-start">
-      Total-Discount: <span class="Discount">0.00</span>
-    </p>
-
-    <div class="mb-3">
-      <label for="payment_status_id" class="form-label">Payment Status</label>
-      <select class="form-control">
-        <option>Paid</option>
-        <option>Unpaid</option>
-        <option>Partial</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="text-center mt-5">
-    <button class="btn btn-primary btn-lg px-4 py-2 shadow">
-      🧾 Process Invoice
-    </button>
-  </div>
-</div>
-
-</body>
 </template>
 
-<script  setup>
+<script setup>
+import { ref, reactive, computed, onMounted } from 'vue';
+import { useCart } from '../cart/Cart';
+import api from '@/Api';
 
+const cart = useCart();
+const customers = ref([]);
+const products = ref([]);
+const cupons = ref([]);
+const cartItems = ref(cart.getCart());
+
+const dataObj = reactive({
+  selectedCustomer: null,
+  selectedProduct: null,
+  selectedcupon: null,
+  qty: 1,
+  sellingPrice: 0,
+  paymentStatus: 'Paid'
+});
+
+const invoiceNumber = ref("1001");
+const todayDate = new Date().toLocaleDateString();
+
+const saleData = () => {
+  api.get("/sales")
+    .then(result => {
+      customers.value = result.data.customers;
+      products.value = result.data.products;
+      cupons.value = result.data.cupons;
+    })
+    .catch(err => console.log(err));
+};
+
+const updateSellingPrice = () => {
+  if (dataObj.selectedProduct) {
+    dataObj.sellingPrice = dataObj.selectedProduct.selling_price;
+  }
+};
+
+const calculateTotal = computed(() => {
+  if (!dataObj.selectedProduct || !dataObj.sellingPrice) return 0;
+  return dataObj.qty * dataObj.sellingPrice;
+});
+
+const calculateSubTotal = computed(() => {
+  const discount = dataObj.selectedcupon?.discount || 0;
+  return calculateTotal.value - discount;
+});
+
+const calculateProfit = computed(() => {
+  const purchaseTotal = (dataObj.selectedProduct?.purchase_price || 0) * dataObj.qty;
+  return calculateSubTotal.value - purchaseTotal;
+});
+
+const addToCart = () => {
+  if (!dataObj.selectedProduct || !dataObj.selectedProduct.id) {
+    alert("Please select a valid product!");
+    return;
+  }
+  if (!dataObj.qty || dataObj.qty < 1) {
+    alert("Please enter a valid quantity!");
+    return;
+  }
+
+  const discount = dataObj.selectedcupon?.discount || 0;
+  
+  cart.save({
+    product: dataObj.selectedProduct,
+    cupon: dataObj.selectedcupon,
+    qty: dataObj.qty,
+    sellingPrice: dataObj.sellingPrice,
+    total: calculateTotal.value,
+    discount: discount,
+    subTotal: calculateSubTotal.value,
+    profit: calculateProfit.value
+  });
+
+  cartItems.value = cart.getCart();
+
+  // Reset form
+  dataObj.selectedProduct = null;
+  dataObj.selectedcupon = null;
+  dataObj.qty = 1;
+  dataObj.sellingPrice = 0;
+};
+
+// item remove 
+const itemRemove= (id)=>{
+  console.log(id);
+  
+  cart.deleteItem(id);
+  cartItems.value = cart.getCart();
+}
+const clearAll = () => {
+  cart.clearCart();
+  cartItems.value = cart.getCart();
+  dataObj.selectedCustomer = null;
+  dataObj.paymentStatus = 'Paid';
+};
+
+const processInvoice = () => {
+  if (!dataObj.selectedCustomer || !dataObj.selectedCustomer.id) {
+    alert("Please select a customer!");
+    return;
+  }
+  if (cartItems.value.length === 0) {
+    alert("Cart is empty!");
+    return;
+  }
+
+  const invoiceData = {
+    customer_id: dataObj.selectedCustomer.id,
+    items: cartItems.value.map(item => ({
+      product_id: item.product.id,
+      cupon_id: item.cupon?.id || null,
+      quantity: item.qty,
+      selling_price: item.sellingPrice,
+      discount: item.discount,
+      total: item.total,
+      sub_total: item.subTotal,
+      profit: item.profit
+    })),
+    payment_status: dataObj.paymentStatus,
+    invoice_number: `SAL-${invoiceNumber.value}`,
+    invoice_date: todayDate,
+    subtotal: cart.subTotal,
+    vat: cart.vat,
+    total_discount: cart.totalDiscount,
+    grand_total: cart.grandTotal
+  };
+
+  api.post('/sales', invoiceData)
+    .then(() => {
+      alert("Invoice Processed Successfully!");
+      clearAll();
+      invoiceNumber.value = parseInt(invoiceNumber.value) + 1;
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error processing invoice!");
+    });
+};
+
+onMounted(() => {
+  saleData();
+});
 </script>
 
-<style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f9;
-      margin: 0;
-      padding: 20px;
-    }
+<style scoped>
+.card {
+  padding: 25px;
+  margin: 20px auto;
+  max-width: 98%;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
 
-    .card {
-      background: white;
-      max-width: 1500px;
-      margin: auto;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
+.wide-table {
+  width: 100% !important;
+  table-layout: auto;
+}
 
-    .first_row {
-        background: rgb(138, 117, 218);
-    }
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
+}
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+.table th, .table td {
+  padding: 12px 15px;
+  white-space: nowrap;
+}
 
-    .d-flex {
-      display: flex;
-      justify-content: space-between;
-    }
+.first_row {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
 
-    .mb-4 {
-      margin-bottom: 1.5rem;
-    }
+.total-summary {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 15px 0;
+}
 
-    .form-control, select, input[type="text"], input[type="number"] {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
+.total-summary span {
+  color: #0d6efd;
+  font-size: 1.3rem;
+}
 
-    .text-end {
-      text-align: right;
-    }
+.clear_all {
+  margin-bottom: 25px;
+}
 
-    .btn {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+.wide-select {
+  min-width: 200px;
+}
 
-    .btn-danger {
-      background-color: red;
-      color: white;
-    }
+.form-control {
+  width: 100%;
+}
 
-    .btn-success {
-      background-color: green;
-      color: white;
-    }
+.customer-details, .invoice-details {
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
 
-    .btn-primary {
-      background-color: #007bff;
-      color: white;
-    }
+.total-section, .payment-section {
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
 
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
+.process-btn {
+  font-size: 1.1rem;
+  padding: 12px 30px;
+}
 
-    .table th, .table td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: center;
-    }
+.btn-success {
+  min-width: 80px;
+}
 
-    .table th {
-      background-color: #333;
-      color: rgb(8, 0, 0);
-    }
-
-    .total-summary {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    .container {
-      margin-top: 30px;
-    }
-
-    .mt-5 {
-      margin-top: 3rem;
-    }
-
-    .mb-3 {
-      margin-bottom: 1rem;
-    }
-
-    .shadow {
-      box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .btn-lg {
-      font-size: 18px;
-      padding: 12px 20px;
-    }
-
-    .px-4 {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-
-    .py-2 {
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-    }
-
-    .text-center {
-      text-align: center;
-    }
-
-    .text-start {
-      text-align: left;
-    }
-  </style>
+.btn-danger {
+  min-width: 50px;
+}
+</style>

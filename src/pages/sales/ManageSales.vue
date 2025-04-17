@@ -94,9 +94,9 @@
     fetchsales();
   });
   
-  const fetchsales = (url = "/sales") => {
+  const fetchsales = (url = "/sales_manage") => {
     if (typeof url !== "string") {
-      url = "/sales";
+      url = "/sales_manage";
     }
   
     api.get(url, { params: { search: search.value } })
@@ -119,7 +119,7 @@
   
   // Delete Function
   const deletesale = (id) => {
-    api.delete(`/sales/${id}`)
+    api.delete(`/sales_manage/${id}`)
       .then((res) => {
         console.log(res);
         fetchsales(); // ডিলিটের পর নতুন করে লোড করবে

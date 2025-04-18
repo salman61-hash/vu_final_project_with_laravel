@@ -220,7 +220,7 @@
           <div class="collapse" id="sidebarExpense">
             <ul class="side-nav-second-level">
               <li>
-                <RouterLink to="expenses">View Expense List</RouterLink>
+                <RouterLink to="expense">View Expense List</RouterLink>
               </li>
             </ul>
           </div>

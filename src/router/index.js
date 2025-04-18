@@ -7,6 +7,8 @@ import CreateCustomer from '@/pages/customers/CreateCustomer.vue';
 import ManageCustomer from '@/pages/customers/ManageCustomer.vue';
 import ShowCustomer from '@/pages/customers/ShowCustomer.vue';
 import UpdateCustomer from '@/pages/customers/UpdateCustomer.vue';
+import CreateExpense from '@/pages/expense/CreateExpense.vue';
+import ManageExpense from '@/pages/expense/ManageExpense.vue';
 import Signin from '@/pages/loginRegister/Signin.vue';
 import NotFound from '@/pages/NotFound.vue';
 import CreateStatus from '@/pages/payment_status/CreateStatus.vue';
@@ -117,7 +119,9 @@ const routes = [
 { path: 'create_sales_return', component: CreateSales_return },
 
 
-
+// expense
+{ path: 'expense', component: ManageExpense },
+{ path: 'create_expense', component: CreateExpense },
 
 
 

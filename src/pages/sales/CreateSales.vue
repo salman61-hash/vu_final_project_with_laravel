@@ -137,7 +137,7 @@
             </td>
           </tr>
 
-          <tr v-for="(item, index) in cartItems" :key="index">
+          <tr v-for="(item, index) in cartItems" :key="item.item_id">
             <td>{{ index + 1 }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.cupon ? item.cupon.name : "-" }}</td>
@@ -163,21 +163,20 @@
     </div>
 
     <div class="text-end total-section">
-  <p class="total-summary">
-    Subtotal: <span>{{ dataObj.subTotal }}</span>
-  </p>
-  <p class="total-summary">
-    Vat (10%): <span>{{ dataObj.vat }}</span>
-  </p>
-  <p class="total-summary">
-    Grand Total: <span>{{ dataObj.grandTotal }}</span>
-  </p>
-</div>
+      <p class="total-summary">
+        Subtotal: <span>{{ dataObj.subTotal }}</span>
+      </p>
+      <p class="total-summary">
+        Vat (10%): <span>{{ dataObj.vat }}</span>
+      </p>
+      <p class="total-summary">
+        Grand Total: <span>{{ dataObj.grandTotal }}</span>
+      </p>
+    </div>
 
-<p class="total-summary text-start">
-  Total-Discount: <span>{{ dataObj.totalDiscount }}</span>
-</p>
-
+    <p class="total-summary text-start">
+      Total-Discount: <span>{{ dataObj.totalDiscount }}</span>
+    </p>
 
     <select v-model="dataObj.selectedStatus">
       <option disabled :value="null">Select Status</option>
@@ -185,7 +184,6 @@
         {{ p.name }}
       </option>
     </select>
-
 
     <div class="text-center mt-5">
       <button
@@ -213,33 +211,49 @@ const cartItems = ref(cart.getCart());
 const payment_status = ref([]);
 
 const dataObj = reactive({
-  selectedCustomer: null,
-  selectedProduct: null,
-  selectedcupon: null,
+  selectedCustomer: {},
+  selectedProduct: {},
+  selectedcupon: {},
+  selectedStatus: {},
   qty: 1,
   sellingPrice: 0,
-  selectedStatus: null,
   totalDiscount: 0,
   subTotal: 0,
   vat: 0,
   grandTotal: 0,
-  cupon: 0,
 });
 
 const grandTotalCalculation = () => {
   const cartData = cart.getCart();
 
-  dataObj.totalDiscount = cartData.reduce((acc, ele) => acc + Number(ele.discount || 0), 0);
+  // Discount যোগফল
+  dataObj.totalDiscount = cartData.reduce(
+    (acc, ele) => acc + Number(ele.discount || 0),
+    0
+  );
 
-  dataObj.subTotal = cartData.reduce((acc, ele) => acc + (ele.subTotal || 0), 0);
+  // Total Price যোগফল (Discount ছাড়া)
+  const totalBeforeDiscount = cartData.reduce(
+    (acc, ele) => acc + (ele.total || 0),
+    0
+  );
+
+  // Discount বাদ দেয়া Subtotal
+  dataObj.subTotal = totalBeforeDiscount - dataObj.totalDiscount;
+
+  // Vat = Subtotal এর উপর
   dataObj.vat = (dataObj.subTotal * 10) / 100;
+
+  // GrandTotal = Subtotal + Vat
   dataObj.grandTotal = dataObj.subTotal + dataObj.vat;
 
   console.log("Total Discount:", dataObj.totalDiscount);
-  console.log("SubTotal:", dataObj.subTotal);
+  console.log("Total Before Discount:", totalBeforeDiscount);
+  console.log("SubTotal After Discount:", dataObj.subTotal);
   console.log("VAT:", dataObj.vat);
   console.log("Grand Total:", dataObj.grandTotal);
 };
+
 
 const invoiceNumber = ref("1001");
 const todayDate = new Date().toLocaleDateString();
@@ -248,7 +262,7 @@ const saleData = () => {
   api
     .get("/sales")
     .then((result) => {
-      console.log(result.data);      
+      console.log(result.data);
       customers.value = result.data.customers;
       products.value = result.data.products;
       cupons.value = result.data.cupons;
@@ -274,14 +288,20 @@ const calculateSubTotal = computed(() => {
 });
 
 const calculateProfit = computed(() => {
-  const purchaseTotal = (dataObj.selectedProduct?.purchase_price || 0) * dataObj.qty;
+  const purchaseTotal =
+    (dataObj.selectedProduct?.purchase_price || 0) * dataObj.qty;
   return calculateSubTotal.value - purchaseTotal;
 });
 
 const addToCart = () => {
-  const discount = dataObj.selectedcupon?.discount || 0;
+  if (!dataObj.selectedProduct.id) return; // ✅ check product selected
 
-  cart.save({
+  const discount = dataObj.selectedcupon?.discount || 0;
+  const subtotal = calculateSubTotal.value;
+  const total = calculateTotal.value;
+  const profit = calculateProfit.value;
+
+  const data = {
     item_id: dataObj.selectedProduct.id,
     name: dataObj.selectedProduct.name,
     price: dataObj.sellingPrice,
@@ -289,20 +309,34 @@ const addToCart = () => {
     discount: discount,
     qty: dataObj.qty,
     sellingPrice: dataObj.sellingPrice,
-    subTotal: calculateSubTotal.value,
-    cupon: dataObj.selectedcupon,
-    profit: calculateProfit.value,
-    total: calculateTotal.value,
-  });
+    subTotal: subtotal,
+    cupon: dataObj.selectedcupon?.name,
+    cupon_id: dataObj.selectedcupon?.id || null,
+    profit: profit,
+    total: total
+  }
 
+  cart.save(data);
   cartItems.value = cart.getCart();
-  grandTotalCalculation();
+  grandTotalCalculation(); // ✅ must recalculate
 
+  // Reset Form
   dataObj.selectedProduct = {};
-  dataObj.selectedcupon = {};
   dataObj.qty = 1;
-  dataObj.sellingPrice = 0;
+  dataObj.discount = 0;
+  // dataObj.vat = 0;
+  // dataObj.cupon = 0;
 };
+
+
+//   cartItems.value = cart.getCart();
+//   grandTotalCalculation();
+
+//   dataObj.selectedProduct = {};
+//   dataObj.selectedcupon = {};
+//   dataObj.qty = 1;
+//   dataObj.sellingPrice = 0;
+// };
 
 const itemRemove = (id) => {
   cart.deleteItem(id);
@@ -318,38 +352,33 @@ const clearAll = () => {
   grandTotalCalculation();
 };
 
+const processInvoice = () => {
+  const processData = {
+    products: cart.getCart(),
+    customer: dataObj.selectedCustomer,
+    cupons: dataObj.selectedcupon,
+    payment_status: dataObj.selectedStatus,
+    discount: dataObj.totalDiscount,
+    grandtotal: dataObj.grandTotal,
+  };
+  console.log(dataObj);
 
-
-// order process 
-const processInvoice=()=>{
-
-const processData= {
-  products:cart.getCart(),
-  customer:dataObj.selectedCustomer,
-  cupons:dataObj.selectedcupon,
-  discount:dataObj.totalDiscount,
-  grandtotal:dataObj.grandTotal,
-  payment_status:dataObj.selectedStatus,
-}
-
-api.post("/sales_process", processData)
-.then((result) => {
-  console.log(result.data);
-}).catch((err) => {
-  console.log(err);
-});
-
-}
-
-
-
+  api
+    .post("/sales_process", processData)
+    .then((result) => {
+      console.log(result.data);
+      // clearAll(); 
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 onMounted(() => {
   saleData();
   grandTotalCalculation();
 });
 </script>
-
 
 <style scoped>
 .card {

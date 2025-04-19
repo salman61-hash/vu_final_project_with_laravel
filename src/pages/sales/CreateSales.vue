@@ -5,24 +5,31 @@
     <div class="d-flex mb-4 customer-details">
       <div class="col-sm-6 text-sm-start">
         <h5 class="pb-2">Customer</h5>
-        <select v-model="dataObj.selectedCustomer" class="form-control wide-select">
+        <select
+          v-model="dataObj.selectedCustomer"
+          class="form-control wide-select"
+        >
           <option disabled :value="null">Select Customer</option>
-          <option v-for="c in customers" :key="c.id" :value="c">{{ c.name }}</option>
+          <option v-for="c in customers" :key="c.id" :value="c">
+            {{ c.name }}
+          </option>
         </select>
-        <p>Phone : {{ dataObj.selectedCustomer?.phone || '-' }}</p>
-        <p>Email : {{ dataObj.selectedCustomer?.email || '-' }}</p>
-        <p>Address : {{ dataObj.selectedCustomer?.address || '-' }}</p>
+        <p>Phone : {{ dataObj.selectedCustomer?.phone || "-" }}</p>
+        <p>Email : {{ dataObj.selectedCustomer?.email || "-" }}</p>
+        <p>Address : {{ dataObj.selectedCustomer?.address || "-" }}</p>
       </div>
 
       <div class="col-sm-6 text-end invoice-details">
-        <strong>Invoice Details:</strong><br>
-        Invoice #: SAL-{{ invoiceNumber }}<br>
+        <strong>Invoice Details:</strong><br />
+        Invoice #: SAL-{{ invoiceNumber }}<br />
         Date: {{ todayDate }}
       </div>
     </div>
 
     <div class="text-end mt-3 clear_all">
-      <button type="button" class="btn btn-danger" @click="clearAll">Clear All</button>
+      <button type="button" class="btn btn-danger" @click="clearAll">
+        Clear All
+      </button>
     </div>
 
     <div class="table-responsive">
@@ -46,42 +53,109 @@
           <tr>
             <td>1</td>
             <td>
-              <select v-model="dataObj.selectedProduct" class="form-control wide-select" @change="updateSellingPrice">
+              <select
+                v-model="dataObj.selectedProduct"
+                class="form-control wide-select"
+                @change="updateSellingPrice"
+              >
                 <option disabled :value="null">Select Product</option>
-                <option v-for="p in products" :key="p.id" :value="p">{{ p.name }}</option>
+                <option v-for="p in products" :key="p.id" :value="p">
+                  {{ p.name }}
+                </option>
               </select>
             </td>
             <td>
-              <select v-model="dataObj.selectedcupon" class="form-control wide-select">
+              <select
+                v-model="dataObj.selectedcupon"
+                class="form-control wide-select"
+              >
                 <option disabled :value="null">Select Cupon</option>
-                <option v-for="cupon in cupons" :key="cupon.id" :value="cupon">{{ cupon.name }}</option>
+                <option v-for="cupon in cupons" :key="cupon.id" :value="cupon">
+                  {{ cupon.name }}
+                </option>
               </select>
             </td>
-            <td><input v-model.number="dataObj.qty" type="number" class="form-control" min="1"></td>
-            <td><input :value="dataObj.selectedProduct?.purchase_price || 0" type="text" class="form-control" disabled></td>
-            <td><input v-model.number="dataObj.sellingPrice" type="number" class="form-control"></td>
-            <td><input :value="calculateTotal" type="text" class="form-control" disabled></td>
-            <td><input :value="dataObj.selectedcupon?.discount || 0" type="text" class="form-control" disabled></td>
-            <td><input :value="calculateSubTotal" type="text" class="form-control" disabled></td>
-            <td><input :value="calculateProfit" type="text" class="form-control" disabled></td>
             <td>
-              <button type="button" class="btn btn-success" @click="addToCart">Add</button>
+              <input
+                v-model.number="dataObj.qty"
+                type="number"
+                class="form-control"
+                min="1"
+              />
+            </td>
+            <td>
+              <input
+                :value="dataObj.selectedProduct?.purchase_price || 0"
+                type="text"
+                class="form-control"
+                disabled
+              />
+            </td>
+            <td>
+              <input
+                v-model.number="dataObj.sellingPrice"
+                type="number"
+                class="form-control"
+              />
+            </td>
+            <td>
+              <input
+                :value="calculateTotal"
+                type="text"
+                class="form-control"
+                disabled
+              />
+            </td>
+            <td>
+              <input
+                :value="dataObj.selectedcupon?.discount || 0"
+                type="text"
+                class="form-control"
+                disabled
+              />
+            </td>
+            <td>
+              <input
+                :value="calculateSubTotal"
+                type="text"
+                class="form-control"
+                disabled
+              />
+            </td>
+            <td>
+              <input
+                :value="calculateProfit"
+                type="text"
+                class="form-control"
+                disabled
+              />
+            </td>
+            <td>
+              <button type="button" class="btn btn-success" @click="addToCart">
+                Add
+              </button>
             </td>
           </tr>
 
           <tr v-for="(item, index) in cartItems" :key="index">
             <td>{{ index + 1 }}</td>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.cupon ? item.cupon.name : '-' }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.cupon ? item.cupon.name : "-" }}</td>
             <td>{{ item.qty }}</td>
-            <td>{{ item.product.purchase_price }}</td>
+            <td>{{ item.purchase_price }}</td>
             <td>{{ item.sellingPrice }}</td>
             <td>{{ item.total }}</td>
             <td>{{ item.discount }}</td>
             <td>{{ item.subTotal }}</td>
             <td>{{ item.profit }}</td>
             <td>
-              <button type="button" class="btn btn-danger" @click="itemRemove(index)">🗑️</button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                @click="itemRemove(item.item_id)"
+              >
+                🗑️
+              </button>
             </td>
           </tr>
         </tbody>
@@ -89,39 +163,54 @@
     </div>
 
     <div class="text-end total-section">
-      <p class="total-summary">Subtotal: <span>{{ cart.subTotal }}</span></p>
-      <p class="total-summary">Vat (10%): <span>{{ cart.vat }}</span></p>
-      <p class="total-summary">Grand Total: <span>{{ cart.grandTotal }}</span></p>
-    </div>
+  <p class="total-summary">
+    Subtotal: <span>{{ dataObj.subTotal }}</span>
+  </p>
+  <p class="total-summary">
+    Vat (10%): <span>{{ dataObj.vat }}</span>
+  </p>
+  <p class="total-summary">
+    Grand Total: <span>{{ dataObj.grandTotal }}</span>
+  </p>
+</div>
 
-    <div class="container payment-section">
-      <p class="total-summary text-start">Total-Discount: <span>{{ cart.totalDiscount }}</span></p>
-      <div class="mb-3">
-        <label for="payment_status_id" class="form-label">Payment Status</label>
-        <select v-model="dataObj.paymentStatus" class="form-control wide-select">
-          <option value="Paid">Paid</option>
-          <option value="Unpaid">Unpaid</option>
-          <option value="Partial">Partial</option>
-        </select>
-      </div>
-    </div>
+<p class="total-summary text-start">
+  Total-Discount: <span>{{ dataObj.totalDiscount }}</span>
+</p>
+
+
+    <select v-model="dataObj.selectedStatus">
+      <option disabled :value="null">Select Status</option>
+      <option v-for="p in payment_status" :key="p.id" :value="p">
+        {{ p.name }}
+      </option>
+    </select>
+
 
     <div class="text-center mt-5">
-      <button type="button" class="btn btn-primary btn-lg px-4 py-2 shadow process-btn" @click="processInvoice">🧾 Process Invoice</button>
+      <button
+        type="button"
+        class="btn btn-primary btn-lg px-4 py-2 shadow process-btn"
+        @click="processInvoice"
+      >
+        🧾 Process Invoice
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
-import { useCart } from '../cart/Cart';
-import api from '@/Api';
+import { ref, reactive, computed, onMounted } from "vue";
+import { useCart } from "../cart/Cart";
+import api from "@/Api";
 
-const cart = useCart();
+const cart = useCart("Sales");
+
 const customers = ref([]);
 const products = ref([]);
 const cupons = ref([]);
 const cartItems = ref(cart.getCart());
+const payment_status = ref([]);
 
 const dataObj = reactive({
   selectedCustomer: null,
@@ -129,20 +218,43 @@ const dataObj = reactive({
   selectedcupon: null,
   qty: 1,
   sellingPrice: 0,
-  paymentStatus: 'Paid'
+  selectedStatus: null,
+  totalDiscount: 0,
+  subTotal: 0,
+  vat: 0,
+  grandTotal: 0,
+  cupon: 0,
 });
+
+const grandTotalCalculation = () => {
+  const cartData = cart.getCart();
+
+  dataObj.totalDiscount = cartData.reduce((acc, ele) => acc + Number(ele.discount || 0), 0);
+
+  dataObj.subTotal = cartData.reduce((acc, ele) => acc + (ele.subTotal || 0), 0);
+  dataObj.vat = (dataObj.subTotal * 10) / 100;
+  dataObj.grandTotal = dataObj.subTotal + dataObj.vat;
+
+  console.log("Total Discount:", dataObj.totalDiscount);
+  console.log("SubTotal:", dataObj.subTotal);
+  console.log("VAT:", dataObj.vat);
+  console.log("Grand Total:", dataObj.grandTotal);
+};
 
 const invoiceNumber = ref("1001");
 const todayDate = new Date().toLocaleDateString();
 
 const saleData = () => {
-  api.get("/sales")
-    .then(result => {
+  api
+    .get("/sales")
+    .then((result) => {
+      console.log(result.data);      
       customers.value = result.data.customers;
       products.value = result.data.products;
       cupons.value = result.data.cupons;
+      payment_status.value = result.data.payment_status;
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 
 const updateSellingPrice = () => {
@@ -167,98 +279,77 @@ const calculateProfit = computed(() => {
 });
 
 const addToCart = () => {
-  if (!dataObj.selectedProduct || !dataObj.selectedProduct.id) {
-    alert("Please select a valid product!");
-    return;
-  }
-  if (!dataObj.qty || dataObj.qty < 1) {
-    alert("Please enter a valid quantity!");
-    return;
-  }
-
   const discount = dataObj.selectedcupon?.discount || 0;
-  
+
   cart.save({
-    product: dataObj.selectedProduct,
-    cupon: dataObj.selectedcupon,
+    item_id: dataObj.selectedProduct.id,
+    name: dataObj.selectedProduct.name,
+    price: dataObj.sellingPrice,
+    purchase_price: dataObj.selectedProduct.purchase_price,
+    discount: discount,
     qty: dataObj.qty,
     sellingPrice: dataObj.sellingPrice,
-    total: calculateTotal.value,
-    discount: discount,
     subTotal: calculateSubTotal.value,
-    profit: calculateProfit.value
+    cupon: dataObj.selectedcupon,
+    profit: calculateProfit.value,
+    total: calculateTotal.value,
   });
 
   cartItems.value = cart.getCart();
+  grandTotalCalculation();
 
-  // Reset form
-  dataObj.selectedProduct = null;
-  dataObj.selectedcupon = null;
+  dataObj.selectedProduct = {};
+  dataObj.selectedcupon = {};
   dataObj.qty = 1;
   dataObj.sellingPrice = 0;
 };
 
-// item remove 
-const itemRemove= (id)=>{
-  console.log(id);
-  
+const itemRemove = (id) => {
   cart.deleteItem(id);
   cartItems.value = cart.getCart();
-}
+  grandTotalCalculation();
+};
+
 const clearAll = () => {
   cart.clearCart();
   cartItems.value = cart.getCart();
   dataObj.selectedCustomer = null;
-  dataObj.paymentStatus = 'Paid';
+  dataObj.selectedStatus = null;
+  grandTotalCalculation();
 };
 
-const processInvoice = () => {
-  if (!dataObj.selectedCustomer || !dataObj.selectedCustomer.id) {
-    alert("Please select a customer!");
-    return;
-  }
-  if (cartItems.value.length === 0) {
-    alert("Cart is empty!");
-    return;
-  }
 
-  const invoiceData = {
-    customer_id: dataObj.selectedCustomer.id,
-    items: cartItems.value.map(item => ({
-      product_id: item.product.id,
-      cupon_id: item.cupon?.id || null,
-      quantity: item.qty,
-      selling_price: item.sellingPrice,
-      discount: item.discount,
-      total: item.total,
-      sub_total: item.subTotal,
-      profit: item.profit
-    })),
-    payment_status: dataObj.paymentStatus,
-    invoice_number: `SAL-${invoiceNumber.value}`,
-    invoice_date: todayDate,
-    subtotal: cart.subTotal,
-    vat: cart.vat,
-    total_discount: cart.totalDiscount,
-    grand_total: cart.grandTotal
-  };
 
-  api.post('/sales', invoiceData)
-    .then(() => {
-      alert("Invoice Processed Successfully!");
-      clearAll();
-      invoiceNumber.value = parseInt(invoiceNumber.value) + 1;
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Error processing invoice!");
-    });
-};
+// order process 
+const processInvoice=()=>{
+
+const processData= {
+  products:cart.getCart(),
+  customer:dataObj.selectedCustomer,
+  cupons:dataObj.selectedcupon,
+  discount:dataObj.totalDiscount,
+  grandtotal:dataObj.grandTotal,
+  payment_status:dataObj.selectedStatus,
+}
+
+api.post("/sales_process", processData)
+.then((result) => {
+  console.log(result.data);
+}).catch((err) => {
+  console.log(err);
+});
+
+}
+
+
+
 
 onMounted(() => {
   saleData();
+  grandTotalCalculation();
 });
 </script>
+
 
 <style scoped>
 .card {
@@ -279,7 +370,8 @@ onMounted(() => {
   width: 100%;
 }
 
-.table th, .table td {
+.table th,
+.table td {
   padding: 12px 15px;
   white-space: nowrap;
 }
@@ -312,13 +404,15 @@ onMounted(() => {
   width: 100%;
 }
 
-.customer-details, .invoice-details {
+.customer-details,
+.invoice-details {
   padding: 15px;
   background: #f9f9f9;
   border-radius: 8px;
 }
 
-.total-section, .payment-section {
+.total-section,
+.payment-section {
   background: #f5f5f5;
   padding: 20px;
   border-radius: 8px;

@@ -45,8 +45,8 @@
                         <tbody>
                             <tr v-for="expense in expenses.data" :key="expense.id">
                                 <td>{{ expense.id }}</td>
-                                <td>{{ expense.user.name }}</td>                               
-                                <td>{{ expense.expense_type.name }}</td>
+                                <td>{{ expense.user?.name }}</td>                               
+                                <td>{{ expense.expense_type?.name }}</td>
                                 <td>{{ expense.amount }}</td>
                                 <td>{{ expense.expense_date }}</td>
                                 

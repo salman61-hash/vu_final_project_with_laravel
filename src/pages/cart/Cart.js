@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 
 export function useCart(cartName) {
+  
   const getCart = () => {
     const cart = JSON.parse(localStorage.getItem(cartName)) || [];
     return cart;

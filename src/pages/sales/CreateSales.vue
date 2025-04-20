@@ -324,19 +324,11 @@ const addToCart = () => {
   dataObj.selectedProduct = {};
   dataObj.qty = 1;
   dataObj.discount = 0;
-  // dataObj.vat = 0;
-  // dataObj.cupon = 0;
+  
 };
 
 
-//   cartItems.value = cart.getCart();
-//   grandTotalCalculation();
 
-//   dataObj.selectedProduct = {};
-//   dataObj.selectedcupon = {};
-//   dataObj.qty = 1;
-//   dataObj.sellingPrice = 0;
-// };
 
 const itemRemove = (id) => {
   cart.deleteItem(id);
@@ -359,6 +351,7 @@ const processInvoice = () => {
     cupons: dataObj.selectedcupon,
     payment_status: dataObj.selectedStatus,
     discount: dataObj.totalDiscount,
+    vat: dataObj.vat,
     grandtotal: dataObj.grandTotal,
   };
   console.log(dataObj);

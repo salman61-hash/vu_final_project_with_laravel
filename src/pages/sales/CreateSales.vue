@@ -360,7 +360,7 @@ const processInvoice = () => {
     .post("/sales_process", processData)
     .then((result) => {
       console.log(result.data);
-      // clearAll(); 
+      clearAll();
     })
     .catch((err) => {
       console.log(err);

@@ -1,205 +1,336 @@
 <template>
- 
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-12">
+          <div class="invoice-wrap">
+            <!-- Purchase Bill Title & Invoice Details -->
+            <div class="d-flex justify-content-between align-items-center my-4">
+              <div><h1>Purchase Bill</h1></div>
+              <div class="text-end">
+                <strong>Invoice Details:</strong><br />
+                Invoice #: {{ invoiceNumber }}<br />
+                Date: {{ invoiceDate }}<br />
+              </div>
+            </div>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Purchase Bill</title>
-  
-</head>
-<body>
+            <div class="row">
+              <!-- Purchase From Company Address -->
+              <div class="col-md-8">
+                <div class="invoice-address mb-4">
+                  <h6 class="fw-bold mb-2 text-primary">Purchase From:</h6>
+                  <ul class="list-unstyled">
+                    <li>XYZ Shop</li>
+                    <li>Dhaka, Bangladesh</li>
+                    <li>Phone: 01793 956 777</li>
+                    <li>Email: mdaslamcric@gmail.com</li>
+                  </ul>
+                </div>
+              </div>
 
-<div class="card">
-  <h2>💳 Purchase Bill</h2>
+              <!-- Supplier Selection -->
+              <div class="col-md-4">
+                <div class="invoice-address text-start mb-4">
+                  <h6 class="fw-bold mb-2 text-primary">Supplier:</h6>
+                  <select
+                    v-model="dataObj.selectedsupplier"
+                    class="form-control mb-2"
+                  >
+                    <option disabled value="">Select Supplier</option>
+                    <option v-for="s in suppliers" :key="s.id" :value="s">
+                      {{ s.name }}
+                    </option>
+                  </select>
 
-  <div class="section">
-    <div>
-      <h4>📦 Supplier Information</h4>
-      <label for="supplier_id">Supplier</label>
-      <select id="supplier_id">
-        <option value="">Select Supplier</option>
-        <option value="1">Supplier A</option>
-        <option value="2">Supplier B</option>
-      </select>
+                  <p>
+                    Address:
+                    <span>{{ dataObj.selectedsupplier.address || "N/A" }}</span>
+                  </p>
+                  <p>
+                    Email:
+                    <span>{{ dataObj.selectedsupplier.email || "N/A" }}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
 
-      <p><strong>Address:</strong> <span class="address">123 Street</span></p>
-      <p><strong>Phone:</strong> <span class="phone">0123456789</span></p>
+            <div>
+              <button @click="clearCart" class="btn btn-danger">
+                Clear All
+              </button>
+            </div>
+
+            <!-- Product Table -->
+            <div class="table-responsive mt-2">
+              <table class="table table-bordered">
+                <thead class="table-light text-white bg-primary">
+                  <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Purchase Price</th>
+                    <th>Qty</th>
+                    <th>Discount</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
+                  </tr>
+                  <tr>
+                    <th>#</th>
+                    <th>
+                      <select
+                        v-model="dataObj.selectedProduct"
+                        class="form-control"
+                      >
+                        <option value="">Select Product</option>
+                        <option v-for="p in products" :key="p.id" :value="p">
+                          {{ p.name }}
+                        </option>
+                      </select>
+                    </th>
+                    <th>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="dataObj.selectedProduct.purchase_price"
+                        disabled
+                      />
+                    </th>
+                    <th>
+                      <input
+                        type="number"
+                        class="form-control"
+                        v-model="dataObj.qty"
+                        min="1"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        type="number"
+                        class="form-control"
+                        v-model="dataObj.discount"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        type="text"
+                        class="form-control"
+                        :value="calculatedSubtotal"
+                        disabled
+                      />
+                    </th>
+                    <th>
+                      <button @click="addToCart" class="btn btn-success">
+                        Add
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+
+                <!-- Purchase Items -->
+                <tbody>
+                  <tr v-for="(item, i) in cartItems" :key="item.item_id">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.qty }}</td>
+                    <td>{{ item.discount }}</td>
+                    <td>{{ item.subtotal }}</td>
+                    <td>
+                      <button
+                        @click="itemRemove(item.item_id)"
+                        class="btn btn-warning"
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+
+                <!-- Totals -->
+                <tfoot>
+                  <tr>
+                    <td colspan="5" class="text-end">Sub Total</td>
+                    <td>{{ dataObj.subTotal.toFixed(2) }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="5" class="text-end">Vat (5%)</td>
+                    <td>{{ dataObj.vat.toFixed(2) }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="5" class="text-end">Discount</td>
+                    <td>{{ dataObj.totalDiscount.toFixed(2) }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="5" class="text-end fw-bold">Grand Total</td>
+                    <td class="fw-bold">{{ dataObj.grandTotal.toFixed(2) }}</td>
+                  </tr>
+                </tfoot>
+              </table>
+
+              <!-- Payment Status Select -->
+              <select v-model="dataObj.selectedStatus">
+                <option disabled :value="null">Select Status</option>
+                <option v-for="p in payment_status" :key="p.id" :value="p">
+                  {{ p.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Process Purchase Button -->
+            <div class="d-flex justify-content-end mt-4">
+              <button @click="process" class="btn btn-success">
+                Save Purchase
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="text-end">
-      <h4>🧾 Invoice Details</h4>
-      <p>Purchase ID: <strong>INV-001</strong></p>
-      <p>Date: 11 Apr 2025</p>
-      <p>Due Date: 28 Feb 2025</p>
-    </div>
   </div>
-
-  <div class="text-end">
-    <button class="btn btn-danger">Clear All</button>
-  </div>
-
-  <table>
-    <thead>
-    <tr>
-      <th>Sl</th>
-      <th>Item</th>
-      <th>Quantity</th>
-      <th>Unit Price</th>
-      <th>Total</th>
-      <th>Discount</th>
-      <th>Sub Total</th>
-      <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>1</td>
-      <td>
-        <select>
-          <option value="">Select Product</option>
-          <option value="1">Product A</option>
-          <option value="2">Product B</option>
-        </select>
-      </td>
-      <td><input type="number" class="qty"></td>
-      <td><input type="text" class="P_price" disabled></td>
-      <td><input type="text" class="total" disabled></td>
-      <td><input type="text" class="discount"></td>
-      <td><input type="text" class="subtotal" disabled></td>
-      <td><button class="btn btn-success">Add</button></td>
-    </tr>
-    </tbody>
-  </table>
-
-  <div class="summary text-end">
-    <p><strong>💰 Subtotal:</strong> <span class="subtotal">00</span></p>
-    <p><strong>💸 Vat (10%):</strong> <span class="vat">00</span></p>
-    <p><strong>💯 Total Amount:</strong> <span class="grand_total">00</span></p>
-  </div>
-
-  <div class="summary text-start">
-    <p><strong>Total Discount:</strong> <span class="Discount">00</span></p>
-  </div>
-
-  <div class="mb-3">
-    <label for="payment_status">Payment Status</label>
-    <select id="payment_status">
-      <option value="1">Paid</option>
-      <option value="2">Unpaid</option>
-      <option value="3">Partial</option>
-    </select>
-  </div>
-
-  <div class="footer-button">
-    <button class="btn btn-primary btn-lg">🧾 Process Invoice</button>
-  </div>
-</div>
-
-</body>
-
-
-
 </template>
 
-<script lang="ts" setup>
+<script setup>
+import api from "@/Api";
+import { computed, onMounted, reactive, ref } from "vue";
+import { useCart } from "../cart/Cart";
 
+const suppliers = ref([]);
+const products = ref([]);
+const payment_status = ref([]);
+
+const cart = useCart("Purchase");
+const cartItems = ref(cart.getCart());
+
+const invoiceNumber = ref("");
+const invoiceDate = ref("");
+
+const generateInvoice = () => {
+  const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const randomPart = Math.floor(1000 + Math.random() * 9000);
+  invoiceNumber.value = `PUR-${datePart}-${randomPart}`;
+
+  const today = new Date();
+  const options = { day: "2-digit", month: "short", year: "numeric" };
+  invoiceDate.value = today.toLocaleDateString("en-US", options);
+};
+
+const dataObj = reactive({
+  selectedsupplier: {},
+  selectedProduct: {},
+  selectedStatus: {},
+  qty: 1,
+  discount: 0,
+  totalDiscount: 0,
+  subTotal: 0,
+  vat: 0,
+  grandTotal: 0,
+});
+
+const calculatedSubtotal = computed(() => {
+  if (dataObj.selectedProduct && dataObj.selectedProduct.purchase_price) {
+    let price = dataObj.selectedProduct.purchase_price;
+    let qty = dataObj.qty || 1;
+    let discount = dataObj.discount || 0;
+    return price * qty - discount;
+  }
+  return 0;
+});
+
+const grandTotalCalculation = () => {
+  const subtotal = cartItems.value.reduce(
+    (acc, item) => acc + item.subtotal,
+    0
+  );
+  const vat = (subtotal * 5) / 100;
+  const totalDiscount = cartItems.value.reduce(
+    (acc, item) => acc + item.discount,
+    0
+  );
+  const grandTotal = subtotal + vat - totalDiscount;
+
+  dataObj.subTotal = subtotal;
+  dataObj.vat = vat;
+  dataObj.totalDiscount = totalDiscount;
+  dataObj.grandTotal = grandTotal;
+};
+
+const PurchaseData = () => {
+  api
+    .get("/purchase")
+    .then((result) => {
+      suppliers.value = result.data.suppliers;
+      products.value = result.data.products;
+      payment_status.value = result.data.payment_status;
+    })
+    .catch((err) => console.log(err));
+};
+
+const addToCart = () => {
+  if (!dataObj.selectedProduct.id) return;
+
+  let discount = dataObj.discount * dataObj.qty;
+  let subtotal =
+    dataObj.selectedProduct.purchase_price * dataObj.qty - discount;
+
+  const item = {
+    item_id: dataObj.selectedProduct.id,
+    name: dataObj.selectedProduct.name,
+    price: dataObj.selectedProduct.purchase_price,
+    discount: discount,
+    qty: dataObj.qty,
+    subtotal: subtotal,
+  };
+
+  cart.save(item);
+  cartItems.value = cart.getCart();
+  grandTotalCalculation();
+
+  dataObj.selectedProduct = {};
+  dataObj.qty = 1;
+  dataObj.discount = 0;
+};
+
+const itemRemove = (id) => {
+  cart.deleteItem(id);
+  cartItems.value = cart.getCart();
+  grandTotalCalculation();
+};
+
+const clearCart = () => {
+  cart.clearCart();
+  cartItems.value = [];
+  grandTotalCalculation();
+};
+
+const processPurchase = () => {
+  alert("Purchase saved successfully!");
+};
+
+onMounted(() => {
+  PurchaseData();
+  generateInvoice();
+});
+
+const process = () => {
+  const processData = {
+    products: cart.getCart(),
+    supplier: dataObj.selectedsupplier,
+    discount: dataObj.totalDiscount,
+    payment_status: dataObj.selectedStatus,
+    vat: dataObj.vat,
+    grandtotal: dataObj.grandTotal,
+  };
+
+  api.post("/purchase_process", processData)
+    .then(result => {
+      console.log(result.data);
+      clearCart(); 
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
 </script>
 
-<style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f7f9fc;
-      margin: 0;
-      padding: 20px;
-    }
-
-    .card {
-      background-color: white;
-      padding: 50px;
-      max-width: 1300px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 10px;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .section {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 30px;
-    }
-
-    .section div {
-      width: 48%;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-
-    select, input[type="text"], input[type="number"] {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      padding: 10px;
-      border: 1px solid #ddd;
-      text-align: center;
-    }
-
-    th {
-      background-color: #007bff;
-      color: white;
-    }
-
-    .btn {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .btn-success {
-      background-color: green;
-      color: white;
-    }
-
-    .btn-danger {
-      background-color: red;
-      color: white;
-    }
-
-    .btn-primary {
-      background-color: #007bff;
-      color: white;
-    }
-
-    .text-end {
-      text-align: right;
-    }
-
-    .summary {
-      margin-top: 30px;
-      font-size: 16px;
-    }
-
-    .footer-button {
-      text-align: center;
-      margin-top: 30px;
-    }
-  </style>
+<style scoped>
+/* Your style here */
+</style>

@@ -1,19 +1,19 @@
 <template>
-   <div class="container mt-4">
+     <div class="container mt-4">
         <div class="card shadow-lg">
             <!-- Header with Add Button -->
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">Expense List</h4>
-            <RouterLink to="/create_expense" class="btn btn-light">
-                <i class="fas fa-plus-circle"></i> Add Expense
+                <h4 class="mb-0">Expense_Type List</h4>
+            <RouterLink to="/create_expense_type" class="btn btn-light">
+                <i class="fas fa-plus-circle"></i> Add Expense_Type
             </RouterLink>
             </div>
 
             <!-- Search Bar -->
             <div class="mb-3 mt-3">
-                <form @submit.prevent class="d-flex justify-content-center ">
+                <form class="d-flex justify-content-center">
                     <div class="input-group" style="max-width: 400px">
-                        <input v-model="search" @input="fetchexpense" class="form-control rounded"
+                        <input v-model="search" @input="fetchexpense_type" class="form-control rounded"
                             placeholder="Search..." />
                         <button type="submit" class="btn btn-warning d-flex align-items-center rounded">
                             <i class="fas fa-search me-2"></i> Search
@@ -27,44 +27,40 @@
 
            
 
-            <!-- coupon Table -->
+            <!-- expense_type Table -->
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead class="table-dark">
                             <tr>
                                 <th>ID</th>
-                                <th>User </th>
-                                <th>Expense Type</th>
-                                <th>Amount</th>
-                                <th>Expense Date</th>
+                                <th>Name</th>
+                               
                                 
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="expense in expenses.data" :key="expense.id">
-                                <td>{{ expense.id }}</td>
-                                <td>{{ expense.user?.name }}</td>                               
-                                <td>{{ expense.expense_type?.name }}</td>
-                                <td>{{ expense.amount }}</td>
-                                <td>{{ expense.expense_date }}</td>
+                            <tr v-for="expense_type in expenses_types.data" :key="expense_type.id">
+                                <td>{{ expense_type.id }}</td>
+                                <td>{{ expense_type.name }}</td>                               
+                               
                                 
                                 <td>
-                                <RouterLink class="btn btn-sm btn-info me-2" :to="`/expense/${expense.id}`">
+                                <RouterLink class="btn btn-sm btn-info me-2" :to="`/expense_type/${expense_type.id}`">
                                     Show <i class="fas fa-eye"></i>
                                 </RouterLink>
-                                <RouterLink class="btn btn-sm btn-warning me-2" :to="`/expense/edit/${expense.id}`">
+                                <RouterLink class="btn btn-sm btn-warning me-2" :to="`/expense_type/edit/${expense_type.id}`">
                                     Update <i class="fas fa-edit"></i>
                                 </RouterLink>
-                                <button class="btn btn-danger btn-sm" @click="deleteexpense(expense.id)">
+                                <button class="btn btn-danger btn-sm" @click="deleteexpense_type(expense_type.id)">
                                     Delete
                                 </button>
                             </td>
                             </tr>
-                            <tr v-if="expenses.data && expenses.data.length === 0">
+                            <tr v-if="expenses_types.data && expenses_types.data.length === 0">
                                 <td colspan="6" class="text-center text-danger">
-                                    No coupons Found
+                                    No expense_types Found
                                 </td>
                             </tr>
                         </tbody>
@@ -78,7 +74,7 @@
                             <li v-for="(page, index) in pagination.links" :key="index" class="page-item"
                                 :class="{ active: page.active, disabled: !page.url }">
                                 <a href="#" class="page-link" v-html="formatPageLabel(page.label)"
-                                    @click.prevent="page.url && fetchexpense(page.url)">
+                                    @click.prevent="page.url && fetchexpense_type(page.url)">
                                 </a>
                             </li>
                         </ul>
@@ -89,24 +85,24 @@
     </div>
 </template>
 
-<script  setup>
+<script setup>
 import api from '@/Api';
 import { onMounted, ref } from 'vue';
 
 
-const expenses = ref({data:[]});
+const expenses_types = ref({data:[]});
 const search = ref("");
 const pagination = ref({});
 
-const fetchexpense = (url = "/expense") => {
+const fetchexpense_type = (url = "/expense_type") => {
   if (typeof url !== "string") {
-    url = "/expense";
+    url = "/expense_type";
   }
   api
     .get(url, { params: { search: search.value } })
     .then((result) => {
       console.log(result.data);
-      expenses.value = result.data;
+      expenses_types.value = result.data;
       pagination.value = result.data;
     })
     .catch((err) => {
@@ -114,14 +110,10 @@ const fetchexpense = (url = "/expense") => {
     });
 };
 
-// search
-// const debouncedFetchcoupons = fetchcoupons;
-
 onMounted(() => {
-    fetchexpense();
+    fetchexpense_type();
   
 });
-
 
 // pagination
 const formatPageLabel = (label) => {
@@ -129,19 +121,6 @@ const formatPageLabel = (label) => {
   if (label === "Next &raquo;") return "»";
   return label;
 };
-
-
-const deleteexpense = (id)=>{
-    api.delete(`/expense/${id}`)
-            .then((res)=>{
-                console.log(res);
-                fetchexpense();
-                
-            }).catch(err => {
-      console.log(err);
-    });
-}
-
 
 </script>
 

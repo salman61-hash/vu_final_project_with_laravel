@@ -71,7 +71,7 @@
                   </tfoot>
                 </table>
   
-                <p v-else class="mt-4 text-center text-muted">No purchases found for the selected date range.</p>
+                <p v-else class="mt-4 text-center text-muted">No Sales found for the selected date range.</p>
   
               </div>
             </div>
@@ -98,7 +98,7 @@
   });
   
   const loadInitialData = () => {
-    api.get("purchaseReport/data")
+    api.get("/sales_data")
       .then(result => {
         customers.value = result.data.customers;
         paymentStatus.value = result.data.payment_statuses;
@@ -107,7 +107,7 @@
   };
   
   const fromSubmit = () => {
-    api.post("/purchaseReport", ObjSearch)
+    api.post("/salesReport", ObjSearch)
       .then(result => {
         purchaseData.value = result.data.purchases;
         totalAmount.value = result.data.totalAmount;

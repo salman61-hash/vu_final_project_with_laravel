@@ -35,8 +35,13 @@
 
         <!-- User Section -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarUser" aria-expanded="false" aria-controls="sidebarUser"
-            class="side-nav-link">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarUser"
+            aria-expanded="false"
+            aria-controls="sidebarUser"
+            class="side-nav-link"
+          >
             <i class="ri-user-line"></i>
             <span> Users </span>
             <span class="menu-arrow"></span>
@@ -50,10 +55,15 @@
           </div>
         </li>
 
-           <!-- Coupons Section -->
-           <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarCoupons" aria-expanded="false" aria-controls="sidebarUser"
-            class="side-nav-link">
+        <!-- Coupons Section -->
+        <li class="side-nav-item">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarCoupons"
+            aria-expanded="false"
+            aria-controls="sidebarUser"
+            class="side-nav-link"
+          >
             <i class="ri-user-line"></i>
             <span> Coupons </span>
             <span class="menu-arrow"></span>
@@ -69,8 +79,13 @@
 
         <!-- Customer Section -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarCustomer" aria-expanded="false" aria-controls="sidebarCustomer"
-            class="side-nav-link">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarCustomer"
+            aria-expanded="false"
+            aria-controls="sidebarCustomer"
+            class="side-nav-link"
+          >
             <i class="ri-user-fill"></i>
             <span> Customers </span>
             <span class="menu-arrow"></span>
@@ -86,8 +101,13 @@
 
         <!-- Supplier Section -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarSupplier" aria-expanded="false" aria-controls="sidebarSupplier"
-            class="side-nav-link">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarSupplier"
+            aria-expanded="false"
+            aria-controls="sidebarSupplier"
+            class="side-nav-link"
+          >
             <i class="ri-truck-line"></i>
             <span> Suppliers </span>
             <span class="menu-arrow"></span>
@@ -95,7 +115,7 @@
           <div class="collapse" id="sidebarSupplier">
             <ul class="side-nav-second-level">
               <li>
-                <RouterLink to="suppliers">View Suppliers List</RouterLink>
+                <RouterLink to="/suppliers">View Suppliers List</RouterLink>
               </li>
             </ul>
           </div>
@@ -103,26 +123,36 @@
 
         <!-- Self/category -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarself" aria-expanded="false" aria-controls="sidebarself"
-            class="side-nav-link">
-            <i class="ri-user-line"></i> <!-- Changed icon -->
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarself"
+            aria-expanded="false"
+            aria-controls="sidebarself"
+            class="side-nav-link"
+          >
+            <i class="ri-user-line"></i>
+            <!-- Changed icon -->
             <span> Self </span>
             <span class="menu-arrow"></span>
           </a>
           <div class="collapse" id="sidebarself">
             <ul class="side-nav-second-level">
               <li>
-                <RouterLink to="self">View Self List</RouterLink>
+                <RouterLink to="/self">View Self List</RouterLink>
               </li>
             </ul>
           </div>
         </li>
 
-
         <!-- Payment Status Section -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarPaymentStatus" aria-expanded="false"
-            aria-controls="sidebarPaymentStatus" class="side-nav-link">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarPaymentStatus"
+            aria-expanded="false"
+            aria-controls="sidebarPaymentStatus"
+            class="side-nav-link"
+          >
             <i class="ri-wallet-line"></i>
             <span> Payment Status </span>
             <span class="menu-arrow"></span>
@@ -130,7 +160,7 @@
           <div class="collapse" id="sidebarPaymentStatus">
             <ul class="side-nav-second-level">
               <li>
-                <RouterLink to="status">View Payment Status List</RouterLink>
+                <RouterLink to="/status">View Payment Status List</RouterLink>
               </li>
             </ul>
           </div>
@@ -138,8 +168,13 @@
 
         <!-- Products Section -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarProducts" aria-expanded="false" aria-controls="sidebarProducts"
-            class="side-nav-link">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarProducts"
+            aria-expanded="false"
+            aria-controls="sidebarProducts"
+            class="side-nav-link"
+          >
             <i class="ri-customer-service-line"></i>
             <span> Products </span>
             <span class="menu-arrow"></span>
@@ -147,7 +182,7 @@
           <div class="collapse" id="sidebarProducts">
             <ul class="side-nav-second-level">
               <li>
-                <RouterLink to="products">View Products List</RouterLink>
+                <RouterLink to="/products">View Products List</RouterLink>
               </li>
             </ul>
           </div>
@@ -155,8 +190,13 @@
 
         <!-- Purchase Section -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarPurchase" aria-expanded="false" aria-controls="sidebarPurchase"
-            class="side-nav-link">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarPurchase"
+            aria-expanded="false"
+            aria-controls="sidebarPurchase"
+            class="side-nav-link"
+          >
             <i class="ri-shopping-cart-line"></i>
             <span> Purchase </span>
             <span class="menu-arrow"></span>
@@ -167,16 +207,24 @@
                 <RouterLink to="purchase">View Purchase List</RouterLink>
               </li>
               <li>
-                <RouterLink to="purchase_details">View Purchase Details</RouterLink>
+                <RouterLink to="/purchase_details"
+                  >View Purchase Details</RouterLink
+                >
               </li>
               <li>
-                <RouterLink to="purchase_return">View Purchase Return List</RouterLink>
+                <RouterLink to="/purchase_return"
+                  >View Purchase Return List</RouterLink
+                >
               </li>
               <li>
-                <RouterLink to="purchaseDetails_return">View Purchase Return Details List</RouterLink>
+                <RouterLink to="/purchaseDetails_return"
+                  >View Purchase Return Details List</RouterLink
+                >
               </li>
               <li>
-                <RouterLink to="purchase/report">View Purchase Report List</RouterLink>
+                <RouterLink to="/purchase/report"
+                  >View Purchase Report List</RouterLink
+                >
               </li>
             </ul>
           </div>
@@ -184,8 +232,13 @@
 
         <!-- Sales Section -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarSales" aria-expanded="false" aria-controls="sidebarSales"
-            class="side-nav-link">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarSales"
+            aria-expanded="false"
+            aria-controls="sidebarSales"
+            class="side-nav-link"
+          >
             <i class="ri-shopping-cart-line"></i>
             <!-- Correct Sales Icon -->
             <span> Sales </span>
@@ -211,8 +264,13 @@
 
         <!-- Expense Section -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarExpense" aria-expanded="false" aria-controls="sidebarExpense"
-            class="side-nav-link">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarExpense"
+            aria-expanded="false"
+            aria-controls="sidebarExpense"
+            class="side-nav-link"
+          >
             <i class="ri-money-dollar-circle-line"></i>
             <span> Expense </span>
             <span class="menu-arrow"></span>
@@ -220,7 +278,12 @@
           <div class="collapse" id="sidebarExpense">
             <ul class="side-nav-second-level">
               <li>
-                <RouterLink to="expense">View Expense List</RouterLink>
+                <RouterLink to="/expense_type"
+                  >View Expense_type List</RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink to="/expense">View Expense List</RouterLink>
               </li>
             </ul>
           </div>
@@ -228,8 +291,13 @@
 
         <!-- Stock Section -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarStock" aria-expanded="false" aria-controls="sidebarStock"
-            class="side-nav-link">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarStock"
+            aria-expanded="false"
+            aria-controls="sidebarStock"
+            class="side-nav-link"
+          >
             <i class="ri-stack-line"></i>
             <span> Stocks </span>
             <span class="menu-arrow"></span>
@@ -237,7 +305,10 @@
           <div class="collapse" id="sidebarStock">
             <ul class="side-nav-second-level">
               <li>
-                <RouterLink to="stocks">View Stocks List</RouterLink>
+                <RouterLink to="/stock">View Stocks List</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/stock_report">View Stock Report</RouterLink>
               </li>
             </ul>
           </div>
@@ -245,8 +316,13 @@
 
         <!-- Withdraw Section -->
         <li class="side-nav-item">
-          <a data-bs-toggle="collapse" href="#sidebarWithdraw" aria-expanded="false" aria-controls="sidebarWithdraw"
-            class="side-nav-link">
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarWithdraw"
+            aria-expanded="false"
+            aria-controls="sidebarWithdraw"
+            class="side-nav-link"
+          >
             <i class="ri-exchange-dollar-line"></i>
             <span> Withdraw </span>
             <span class="menu-arrow"></span>
@@ -254,28 +330,37 @@
           <div class="collapse" id="sidebarWithdraw">
             <ul class="side-nav-second-level">
               <li>
-                <RouterLink to="withdraw">View Withdraw List</RouterLink>
+                <RouterLink to="/withdraw">View Withdraw List</RouterLink>
               </li>
             </ul>
           </div>
         </li>
-      
+
         <!-- Total Profit -->
         <li class="side-nav-item">
-  <a data-bs-toggle="collapse" href="#sidebarprofit" aria-expanded="false" aria-controls="sidebarWithdraw" class="side-nav-link">
-    <i class="ri-bar-chart-line"></i> <!-- Changed icon here -->
-    <span> Total Profit </span>
-    <span class="menu-arrow"></span>
-  </a>
-  <div class="collapse" id="sidebarprofit">
-    <ul class="side-nav-second-level">
-      <li>
-        <RouterLink to="withdraw">View Withdraw List</RouterLink>
-      </li>
-    </ul>
-  </div>
-</li>
-
+          <a
+            data-bs-toggle="collapse"
+            href="#sidebarprofit"
+            aria-expanded="false"
+            aria-controls="sidebarWithdraw"
+            class="side-nav-link"
+          >
+            <i class="ri-bar-chart-line"></i>
+            <!-- Changed icon here -->
+            <span> Total Profit </span>
+            <span class="menu-arrow"></span>
+          </a>
+          <div class="collapse" id="sidebarprofit">
+            <ul class="side-nav-second-level">
+              <li>
+                <RouterLink to="/profit">View profit List</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/profit_report">View Profit Report</RouterLink>
+              </li>
+            </ul>
+          </div>
+        </li>
       </ul>
       <!--- End Sidemenu -->
 

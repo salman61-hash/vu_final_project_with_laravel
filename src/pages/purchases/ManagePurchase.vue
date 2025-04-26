@@ -101,9 +101,9 @@ onMounted(()=>{
     fetchpurchase();
 })
 
-const fetchpurchase=(url = "/purchase")=>{
+const fetchpurchase=(url = "/purchase_manage")=>{
     if (typeof url !== "string") {
-    url = "/purchase";
+    url = "/purchase_manage";
   }
 
   api.get(url, { params: { search: search.value } })
@@ -128,7 +128,7 @@ const formatPageLabel = (label) => {
 
 
 const deletepurchase = (id)=>{
-    api.delete(`/purchase/${id}`)
+    api.delete(`/purchase_manage/${id}`)
             .then((res)=>{
                 console.log(res);
                 fetchpurchase();

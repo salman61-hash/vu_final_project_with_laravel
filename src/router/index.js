@@ -139,7 +139,7 @@ const routes = [
       { path: "stock_report", component: StockReport },
 
       // profit
-      // { path: "profit", component: ManageProfit },
+      { path: "profit", component: ManageProfit },
       { path: "profit_report", component: ProfitReport },
     ],
   },

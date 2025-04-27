@@ -11,7 +11,7 @@ export default defineConfig({
     vueDevTools(),
   ],
 
-  // base:'https://devsalman.com/vue-laravel',
+  base:'https://devsalman.com/vue-laravel',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
